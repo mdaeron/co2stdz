@@ -1,4 +1,4 @@
-# How-to
+# Instructions
 
 ## Create a dataset
 
@@ -25,7 +25,7 @@ ds.read_csv('some_data.csv')
 ds.read_csv('some_new_data.csv')
 ```
 
-## Standardize carbon-13 measurements
+## Carbon-13 standardization
 
 You'll need to provide at least two δ13C anchors (in-lab standards and/or international reference materials such as [IAEA603](https://analytical-reference-materials.iaea.org/iaea-603)), specifying their nominal δ13CVPDB values.
 
@@ -51,4 +51,11 @@ The correction parameters for each analytical session are stored in `ds.sessions
 .. include:: ../examples/example_d13C_sessions.txt
 ```
 
-<h1>API Documentation</h1>
+## Oxygen-18 standardization
+
+## Triple oxygen standardization
+
+### CO2 samples
+
+### Water samples
+

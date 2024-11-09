@@ -3,6 +3,7 @@ Process and standardize spectroscopic analyses of CO2 isotopologues
 
 .. include:: ../../docpages/overview.md
 .. include:: ../../docpages/howto.md
+.. include:: ../../docpages/api.md
 
 """
 

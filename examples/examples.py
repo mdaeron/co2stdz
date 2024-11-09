@@ -55,9 +55,11 @@ for x in X:
 with open('example_dataset.csv', 'w') as fid:
 	fid.write(pretty_table(Y, hsep = ',  ', vsep = ''))
 
-from example_d13C import ds_ini, ds
+from example_d13C_setup import ds
 with open('example_d13C_data.txt', 'w') as fid:
-	ds_ini.data.to_string(fid)
+	ds.data.to_string(fid)
+
+from example_d13C import ds
 with open('example_d13C_samples.txt', 'w') as fid:
 	ds.samples.to_string(fid)
 with open('example_d13C_sessions.txt', 'w') as fid:

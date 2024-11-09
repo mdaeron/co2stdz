@@ -1,6 +1,7 @@
 import pdoc
 
 substitutions = [
+	('WGδ13C_VPDB', '<sup>WG</sup>δ<sup>13</sup>C<sub>VPDB</sub>'),
 	('δ13C_VPDB', 'δ<sup>13</sup>C<sub>VPDB</sub>'),
 	('δ18O_VPDB', 'δ<sup>18</sup>O<sub>VPDB</sub>'),
 	('δ18O_VSMOW', 'δ<sup>18</sup>O<sub>VSMOW</sub>'),

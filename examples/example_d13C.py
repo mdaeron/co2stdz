@@ -5,6 +5,8 @@ N = 16
 
 numpy.random.seed(SEED)
 
+sessions = ['2024-10', '2024-11']
+
 anchors = {
 	'REF_A': 0.0,
 	'REF_B': 10.0,
@@ -19,12 +21,11 @@ data = [
 	}
 	for k, (session, sample) in enumerate(
 		zip(
-			['2024-10']*(N//2) + ['2024-11']*(N - N//2),
+			sessions[:1]*(N//2) + sessions[-1:]*(N - N//2),
 			numpy.random.choice(['REF_A', 'REF_B', 'FOO'], size = N),
 		)
 	)
 ]
 
-ds_ini = Dataset(data)
 ds = Dataset(data)
 ds.standardize(k_in = 'd636', k_out = 'd13C_VPDB', anchors = anchors)
