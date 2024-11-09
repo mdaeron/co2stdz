@@ -889,7 +889,7 @@ class Dataset:
 		ax.set_xlabel('δ$^{18}$O   [‰]')
 		ax.set_ylabel('Δ$^{17}$O   [‰]')
 
-		## Or kernel density estimate plot instead of the contourf plot
+		# or kernel density estimate plot instead of the contourf plot:
 		# ax.imshow(numpy.rot90(f), cmap = 'Blues', extent = [xmin, xmax, ymin, ymax])		# Contour plot
 
 		CM = (
@@ -992,24 +992,6 @@ class Dataset:
 				R18_VSMOW = R18_VSMOW,
 				R17_VSMOW = R17_VSMOW,
 				lambda_17 = lambda_17,
-				D727i = 0.1043,
-				D728i = 0.1951,
-				D828i = 0.3743,
-				D637i = 0.5101,
-				D638i = 0.9714,
-				D737i = 1.1188,
-				D738i = 1.6662,
-				D838i = 2.3046,
-				D727=0.1043,
-				D728=0.1951,
-				D828=0.3743,
-				D637=0.5101,
-				D638=0.9714,
-				D737=1.1188,
-				D738=1.6662,
-				D838=2.3046,
-				stochastic = False,
-				xtol = 1e-12,
 			)[:2]
 			
 
