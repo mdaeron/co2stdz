@@ -7,7 +7,11 @@ requires-python = ">= 3.11"
 readme = "readme.md"
 
 [dependencies]
+numpy = ">=2.1.3,<3"
 pandas = ">=2.2.3,<3"
+lmfit = ">=1.3.2,<2"
+scikit-learn = ">=1.5.2,<2"
+matplotlib = ">=3.9.2,<4"
 
 [tool.pixi.project]
 channels = ["conda-forge"]
@@ -16,22 +20,19 @@ platforms = ["osx-arm64"]
 [tool.pixi.pypi-dependencies]
 co2spectroscopy = { path = ".", editable = true }
 
-[tool.pixi.tasks]
-
-[tool.pixi.feature.dev.dependencies]
-flit = ">=3.10.1,<4"
-pytest = ">=8.3.3,<9"
-
-[tool.pixi.environments]
-dev = ["dev"]
-
 [tool.pixi.dependencies]
 numpy = ">=2.1.3,<3"
 pandas = ">=2.2.3,<3"
 lmfit = ">=1.3.2,<2"
 scikit-learn = ">=1.5.2,<2"
 matplotlib = ">=3.9.2,<4"
+tabulate = ">=0.9.0,<0.10"
+flit = ">=3.10.1,<4"
+pytest = ">=8.3.3,<9"
+pdoc = ">=14.4.0,<15"
 
-[tool.pixi.feature.dev.tasks]
+[tool.pixi.tasks]
 publish = {cmd = 'flit publish'}
 test = {cmd = 'pytest'}
+examples = {cmd = 'python examples.py', cwd = 'examples'}
+doc     = {cmd = 'python ../build_doc.py', cwd = 'src', depends-on = ['examples']}

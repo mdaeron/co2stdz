@@ -1,0 +1,5 @@
+         N      d636  d13C_VPDB  SE_d13C_VPDB  95CL_d13C_VPDB  SD_d13C_VPDB
+Sample                                                                     
+FOO     10  5.001806   5.039751      0.054555        0.120074      0.068805
+REF_A    5 -0.031877   0.000000           NaN             NaN      0.057519
+REF_B    1  9.991692  10.000000           NaN             NaN           NaN

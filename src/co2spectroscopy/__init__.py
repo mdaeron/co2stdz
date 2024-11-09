@@ -1,5 +1,9 @@
 """
 Process and standardize spectroscopic analyses of CO2 isotopologues
+
+.. include:: ../../docpages/overview.md
+.. include:: ../../docpages/howto.md
+
 """
 
 __author__    = 'Mathieu Daëron'
@@ -41,7 +45,7 @@ def estimate_covariance(
 		return numpy.cov(X.T)
 
 def sanitize(x):
-	return x.replace('-', '').replace('.', '')
+	return x.replace('-', '__minus__').replace('.', '__dot__').replace('/', '__slash__').replace('+', '__plus__').replace('*', '__star__')
 
 
 def cov_ellipse(CM, p = None, r = None):
@@ -116,6 +120,9 @@ class Dataset:
 			'RefMaterial_2': RM2_value, ...
 		}
 		"""
+		
+		if 'Session' not in self.data:
+			self.data['Session'] = 'this_session'
 		
 		fitparams = lmfit.Parameters()
 
