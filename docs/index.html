@@ -120,9 +120,11 @@ co2stdz    </h1>
 
 <ul>
 <li>the standardized δ value (e.g., δ<sup>13</sup>C<sub>VPDB</sub>) of each unknown sample (“sample” being defined as a homogeneous material analyzed at least once in this dataset);</li>
-<li>the standardized δ value of the working reference gas (e.g., WGδ<sup>13</sup>C<sub>VPDB</sub>) used in each analytical session;</li>
-<li>a scaling factor ƒ characterizing, for each analytical session, the ratio of observed vs true isotopic ratios between analytes and the working gas: ƒ = (1+δ<sub>636</sub>) / ((1+δ<sup>13</sup>C<sub>VPDB</sub>) / (1+<sup>WG</sup>δ<sup>13</sup>C<sub>VPDB</sub>))</li>
+<li>the standardized δ value of the working reference gas (e.g., <sup>WG</sup>δ<sup>13</sup>C<sub>VPDB</sub>) used in each analytical session;</li>
+<li>a scaling factor ƒ characterizing, for each analytical session, the ratio of observed vs true isotopic ratios between analytes and the working gas, e.g., ƒ = (1+δ<sub>636</sub>) / [(1+δ<sup>13</sup>C<sub>VPDB</sub>) / (1+<sup>WG</sup>δ<sup>13</sup>C<sub>VPDB</sub>)]</li>
 </ul>
+
+<p><img align="center" style="display:block; margin-left:auto; margin-right:auto;" src="stdz_plot.png"></p>
 
 <p>Thus a dataset with <em>X</em> unknown samples analyzed in <em>Y</em> sessions for a grand total of <em>Z</em> analyses will have (<em>X</em>+2<em>Y</em>) model parameters and (<em>Z</em>-<em>X</em>-2<em>Y</em>) degrees of freedom. The standardization model is fit numerically, yielding best-fit values for each parameter as well as the (<em>X</em>+2<em>Y</em>)-by-(<em>X</em>+2<em>Y</em>) variance-covariance matrix of the best-fit parameter values, yielding standard model errors for all best-fit values (including the final, standardized δ values of all unknown samples) along with analytical error correlations between these values (samples analyzed in the same session are not statistically independent because they are jointly affected by uncertainties in that session's estimated standardization parameters).</p>
 

@@ -1,3 +1,5 @@
+import shutil
+
 def fwcsv(csv, padding = 2):
 	csv = [l.split(',') for l in csv.split('\n') if l]
 	n = [max([len(l[k]) for l in csv]) for k,_ in enumerate(csv[0])]
@@ -29,3 +31,6 @@ with open('example_d13C_force_wg_samples.txt', 'w') as fid:
 	ds.samples.to_string(fid)
 with open('example_d13C_force_wg_sessions.txt', 'w') as fid:
 	ds.sessions['d13C_VPDB'].to_string(fid)
+
+import stdz_plot
+shutil.copyfile('./stdz_plot.png', '../docs/stdz_plot.png')
