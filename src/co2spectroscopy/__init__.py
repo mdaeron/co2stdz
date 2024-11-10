@@ -95,6 +95,8 @@ class Dataset:
 		"""
 		Read additional data from csv file
 		"""
+		if 'skipinitialspace' not in kwargs:
+			kwargs['skipinitialspace'] = True
 		df = pandas.read_csv(filepath_or_buffer, *args, **kwargs)
 		self.data = pandas.concat([self.data, df], ignore_index = True)
 

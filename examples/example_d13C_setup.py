@@ -1,15 +1,18 @@
 from co2spectroscopy import *
 
-SEED = 13
+SEED = 9
 N = 16
+DELTA_SCALING = 0.99
+DELTA_OF_WG = -8.
 
 numpy.random.seed(SEED)
 
 sessions = ['2024-10', '2024-11']
 
-anchors = {
-	'REF_A': 0.0,
-	'REF_B': 10.0,
+samples = {
+	'REF_A': -10.0,
+	'FOO':    -5.0,
+	'REF_B':   0.0,
 }
 
 data = [
@@ -17,7 +20,11 @@ data = [
 		'UID': f'A-{k+1:02.0f}',
 		'Session': session,
 		'Sample': sample,
-		'd636': numpy.random.normal(scale = 0.05) + (anchors[sample] if sample in anchors else 5.0),
+		'd636': 1000 * (
+			(1 + samples[sample] / 1000)
+			/ (1 + DELTA_OF_WG / 1000)
+			- 1
+		) * DELTA_SCALING + numpy.random.normal(scale = 0.05),
 	}
 	for k, (session, sample) in enumerate(
 		zip(
