@@ -1,4 +1,4 @@
-from co2spectroscopy import *
+from co2stdz import *
 
 ds = Dataset()
 ds.read_csv('example_d13C_data.csv')

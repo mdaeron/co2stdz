@@ -1,4 +1,4 @@
-from co2spectroscopy import *
+from co2stdz import *
 
 SEED = 2
 N = 20

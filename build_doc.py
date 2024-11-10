@@ -54,5 +54,5 @@ pdoc.render.configure(search = False)
 pdoc.render.configure(template_directory = '../pdoc_templates')
 
 with open('../docs/index.html', 'w') as fid:
-	fid.write(pdoc.pdoc('co2spectroscopy'))
+	fid.write(pdoc.pdoc('co2stdz'))
 

@@ -1,4 +1,4 @@
-from co2spectroscopy import *
+from co2stdz import *
 from pytest import approx
 
 def test_estimate_covariance():
