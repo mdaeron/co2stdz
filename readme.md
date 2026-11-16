@@ -15,8 +15,8 @@ After performing one or more standardization procedures, the `Dataset` object st
 
 The `Dataset` object also provides some plotting methods, such as:
 
-* [`plot_residuals()`](#Dataset.plot_residuals): display analytical residuals over time
-* [`plot_triple_oxygen_residuals()`](#Dataset.plot_triple_oxygen_residuals): plot the covariation of (δ18O, Δ17O) residuals
+* `plot_residuals()`: display analytical residuals over time
+* `plot_triple_oxygen_residuals()`: plot the covariation of (δ18O, Δ17O) residuals
 
 # Standardization approach
 
@@ -32,7 +32,7 @@ $$
 ƒ = \frac{(1+δ_{636})}{(1+\delta^{13}\text{C}_{\text{VPDB}}) / (1+{}^\text{WG}δ^{13}\text{C}_{\text{VPDB}})}
 $$
 
-<img align="center" style="display:block; margin-left:auto; margin-right:auto;" src="stdz_plot.png">
+<img align="center" style="display:block; margin-left:auto; margin-right:auto;" src="docs/stdz_plot.png">
 
 Thus a dataset with *X* unknown samples analyzed in *Y* sessions for a grand total of *Z* analyses will have (*X*+2*Y*) model parameters and (*Z*-*X*-2*Y*) degrees of freedom. The standardization model is fit numerically, yielding best-fit values for each parameter as well as the (*X*+2*Y*)-by-(*X*+2*Y*) variance-covariance matrix of the best-fit parameter values, yielding standard model errors for all best-fit values (including the final, standardized δ values of all unknown samples) along with analytical error correlations between these values (samples analyzed in the same session are not statistically independent because they are jointly affected by uncertainties in that session's estimated standardization parameters).
 
