@@ -6,12 +6,7 @@ Process and standardize spectroscopic analyses of CO2 isotopologues by compariso
 .. include:: ../../docpages/api.md
 """
 
-__author__    = 'Mathieu Daëron'
-__contact__   = 'mathieu@daeron.fr'
-__copyright__ = 'Copyright (c) 2026 Mathieu Daëron'
-__license__   = 'MIT License - https://opensource.org/licenses/MIT'
-__date__      = '2026-11-16'
-__version__   = '0.0.3'
+from ._metadata import *
 
 import numpy
 import pandas

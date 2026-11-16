@@ -96,7 +96,7 @@ def test_standardize_D17O():
 			assert numpy.round(ds.sessions['D17O_VSMOW'].loc['foo']['d627_scaling'], 3) == 0.949
 			assert numpy.round(ds.sessions['D17O_VSMOW'].loc['foo']['d18O_VSMOW_of_wg'], 3) == 0.
 			assert numpy.round(ds.sessions['D17O_VSMOW'].loc['foo']['d17O_VSMOW_of_wg'], 3) == 0.
-	
+
 			del ds.sessions
 			del ds.samples
 
@@ -114,7 +114,7 @@ def test_standardize_water_eq_CO2_D17O():
 	ds.data['eqCO2_d18O_VSMOW'] = 10.
 	ds.data['eqCO2_D17O_VSMOW'] = -0.15
 	ds.data['eqCO2_d13C_VPDB'] = -5.
-	
+
 
 	anchors = {
 		'REF_A': {'d18O_VSMOW':  0.0, 'D17O_VSMOW': 0.0, },
@@ -150,6 +150,6 @@ def test_standardize_water_eq_CO2_D17O():
 			assert numpy.round(ds.sessions['water_D17O_VSMOW'].loc['foo']['d627_scaling'], 3) == 0.959
 			assert numpy.round(ds.sessions['water_D17O_VSMOW'].loc['foo']['d18O_VSMOW_of_wg'], 3) == 40.716
 			assert numpy.round(ds.sessions['water_D17O_VSMOW'].loc['foo']['d17O_VSMOW_of_wg'], 3) == 21.089
-	
+
 			del ds.sessions
 			del ds.samples
