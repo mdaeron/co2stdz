@@ -30,7 +30,7 @@ plot([DELTA_OF_WG, -1000], [0, 0], '-', dashes = (3,3), lw = 0.8, color = wgcolo
 
 plot(DELTA_OF_WG, 0, 'wo', mec = wgcolor, mew = 1)
 text(DELTA_OF_WG + 2, 0, f'working ref gas\n($δ^{{13}}C_{{VPDB}} = {str(DELTA_OF_WG)}$ ‰)', color = wgcolor, size = 11, va = 'top', ha = 'left')
-text(0, f(0), f'slope = {str(DELTA_SLOPE)}\n', color = scolor, size = 11, va = 'center', ha = 'center', rotation = atan(DELTA_SLOPE)/pi*180, linespacing = 2)
+text(0, f(0), f'slope ƒ = {str(DELTA_SLOPE)}\n', color = scolor, size = 11, va = 'center', ha = 'center', rotation = atan(DELTA_SLOPE)/pi*180, linespacing = 2)
 
 axis([x1, x2, f(x0)-h/2, f(x0)+h/2])
 xlabel('True $δ^{13}C$   [‰ vs VPDB]')

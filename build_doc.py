@@ -50,8 +50,9 @@ def myfilter(docstr):
 	return ('```'.join(work))
 
 pdoc.render.env.filters['myfilter'] = myfilter
-pdoc.render.configure(search = False)
 pdoc.render.configure(template_directory = '../pdoc_templates')
+# pdoc.render.configure(search = False)
+pdoc.render.configure(math = True)
 
 with open('../docs/index.html', 'w') as fid:
 	fid.write(pdoc.pdoc('co2stdz'))

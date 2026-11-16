@@ -1,18 +1,17 @@
 """
-Process and standardize spectroscopic analyses of CO2 isotopologues
+Process and standardize spectroscopic analyses of CO2 isotopologues by comparison with reference materials of known composition
 
 .. include:: ../../docpages/overview.md
 .. include:: ../../docpages/howto.md
 .. include:: ../../docpages/api.md
-
 """
 
 __author__    = 'Mathieu Daëron'
 __contact__   = 'mathieu@daeron.fr'
-__copyright__ = 'Copyright (c) 2024 Mathieu Daëron'
+__copyright__ = 'Copyright (c) 2026 Mathieu Daëron'
 __license__   = 'MIT License - https://opensource.org/licenses/MIT'
-__date__      = '2024-11-07'
-__version__   = '0.0.2'
+__date__      = '2026-11-16'
+__version__   = '0.0.3'
 
 import numpy
 import pandas
@@ -50,6 +49,20 @@ def sanitize(x):
 
 
 def cov_ellipse(CM, p = None, r = None):
+	"""
+	Parameters
+	----------
+	CM : (2, 2) array
+		Covariance matrix.
+	p : float
+		Confidence level, should be in (0, 1)
+
+	Returns
+	-------
+	width, height, rotation :
+		 The lengths of two axes and the rotation angle in degree
+	for the ellipse.
+	"""
 
 	if not (r is None or p is None):
 		raise valueError('cov_ellipse() either p or r can be specified, but not both.')
@@ -123,10 +136,10 @@ class Dataset:
 			'RefMaterial_2': RM2_value, ...
 		}
 		"""
-		
+
 		if 'Session' not in self.data:
 			self.data['Session'] = 'this_session'
-		
+
 		fitparams = lmfit.Parameters()
 
 		for s in self.data.Session.unique():
@@ -139,7 +152,7 @@ class Dataset:
 		for p in fitparams:
 			if p in constraints:
 				fitparams[p].expr = constraints[p]
-		
+
 		def observations():
 			return self.data[k_in]
 
@@ -198,7 +211,7 @@ class Dataset:
 			residuals, fitparams, method = 'least_squares', scale_covar = True
 		)
 
-		self.data[k_out+'_anchor'] = self.data['Sample'].isin(anchors)	
+		self.data[k_out+'_anchor'] = self.data['Sample'].isin(anchors)
 		self.data[k_in+'_predicted'] = predict_observations(fitresult.params)
 		self.data[k_in+'_residual'] = self.data[k_in] - self.data[k_in+'_predicted']
 		self.data[k_out+'_corrected'] = correct_observations(fitresult.params)
@@ -213,13 +226,13 @@ class Dataset:
 			report = lmfit.fit_report(fitresult),
 			Nf = fitresult.nfree,
 			t95 = scipy.stats.t.ppf(1 - 0.05 / 2, fitresult.nfree)
-		)		
+		)
 
 		if not hasattr(self, 'stdz_lookup'):
 			self.stdz_lookup = dict()
 
 		self.stdz_lookup[k_out] = k_out
-	
+
 		if not hasattr(self, 'sessions'):
 			self.sessions = dict()
 
@@ -282,7 +295,7 @@ class Dataset:
 			self.samples = self.samples.combine_first(samples)[columns]
 		else:
 			self.samples = samples.copy()
-		
+
 		df_anchors = pandas.DataFrame({k_out: [anchors[s] for s in anchors]}, index = anchors.keys())
 
 		if hasattr(self, 'anchors'):
@@ -290,7 +303,7 @@ class Dataset:
 		else:
 			self.anchors = df_anchors.copy()
 			self.anchors.index.name = 'Sample'
-		
+
 		# TODO: compute anchor mismatch ie mean and SE of residuals
 
 
@@ -315,7 +328,7 @@ class Dataset:
 		anchors = {
 			'RefMaterial_1': {d18O_key_out: ..., D17O_key_out: ...},
 			'RefMaterial_2': {d18O_key_out: ..., D17O_key_out: ...},
-		}		
+		}
 		"""
 
 		D17O_key_out = d17O_key_out.replace('d17', 'D17')
@@ -333,7 +346,7 @@ class Dataset:
 					numpy.log(1+anchors[s][d17O_key_out] / 1e3)
 					- lambda_17 * numpy.log(1+anchors[s][d18O_key_out] / 1e3)
 				) - gamma_17
-		
+
 		# TODO: check consistency between d17O and D17O in anchors
 
 		fitparams = lmfit.Parameters()
@@ -377,7 +390,7 @@ class Dataset:
 				else float(p[f"D17O_{sanitize(s)}"])
 				for s in self.data.Sample.unique()
 			})
-			
+
 			d17true = 1e3 * (
 				numpy.exp((D17true + gamma_17)/1e3)
 				* (1+d18true/1e3)**lambda_17
@@ -506,7 +519,7 @@ class Dataset:
 					d18corrected - d18true,
 					d17corrected - d17true,
 				])
-# 
+#
 			if ChM is None:
 				return R.flatten()
 			else:
@@ -677,12 +690,12 @@ class Dataset:
 			)
 
 		# TODO: propagate uncertainties to d17O_key_out using the code below
-		# 
+		#
 		# try:
 		# 	i = fitresult.var_names.index('d18O_'+_s)
 		# 	j = fitresult.var_names.index('D17O_'+_s)
 		# 	CM = fitresult.covar[ix_([i,j],[i,j])]
-		# 
+		#
 		# 	J = array([
 		# 		[
 		# 			exp(out['samples'][s][D17O_key_out]/1e3)
@@ -694,7 +707,7 @@ class Dataset:
 		# 			* (1+out['samples'][s][d18O_key_out]/1e3) ** ISOPARAMETERS.lambda_17
 		# 			],
 		# 		])
-		# 
+		#
 		# 	out['samples'][s]['SE_'+d17O_key_out] = float(J.T @ CM @ J)**.5
 		# 	out['samples'][s]['95CL_'+d17O_key_out] = out['samples'][s]['SE_'+d17O_key_out] * out['t95']
 		# except ValueError:
@@ -722,7 +735,7 @@ class Dataset:
 		else:
 			self.anchors = df_anchors.copy()
 			self.anchors.index.name = 'Sample'
-		
+
 		# TODO: compute anchor mismatch ie mean and SE of residuals
 
 	def plot_residuals(self,
@@ -732,7 +745,7 @@ class Dataset:
 		subplots_adjust = [.1, .1, .98, .9, -0.75, -0.25],
 		min_width_for_horizontal_session_labels = 0.1,
 	):
-	
+
 		anchor_key = self.stdz_lookup[key] + '_anchor'
 
 		ax1 = pyplot.subplot(*(subplots[0] if hasattr(subplots[0], '__iter__') else (subplots[0],)))
@@ -740,7 +753,7 @@ class Dataset:
 		ax3 = pyplot.subplot(*(subplots[2] if hasattr(subplots[2], '__iter__') else (subplots[2],)), sharey = ax1)
 
 		pyplot.subplots_adjust(*subplots_adjust)
-				
+
 		X = numpy.arange(len(self.data)) + 0.5
 		_s = ''
 		sessions = []
@@ -782,10 +795,10 @@ class Dataset:
 
 		ax2.plot(X, self.data.where( self.data[anchor_key])['Sample'].map(y_samples), 'ro', mew = 0, ms = 5)
 		ax2.plot(X, self.data.where(~self.data[anchor_key])['Sample'].map(y_samples), 'ko', mew = 0, ms = 5)
-		
-		
+
+
 		ax2.axis([0, len(self.data), 0, len(samples)+1])
-		
+
 		ax2.set_yticks(numpy.arange(len(samples))+1)
 		ax2.set_xticks(X)
 		ax2.xaxis.set_ticklabels(
@@ -830,7 +843,7 @@ class Dataset:
 				- len(self.data[~self.data[anchor_key]]['Sample'].unique())
 			)
 		)**.5
-		
+
 		ax3.text(0, (ymin+ymax)/2, f'   SD = {SD*1000:.1f} ppm', va = 'center', size = 10)
 
 		ax3.spines['right'].set_visible(False)
@@ -844,14 +857,14 @@ class Dataset:
 			labelbottom = False,
 		)
 		ax3.grid(False)
-		
+
 		if ylabel is None:
 			 ylabel = key + ' residuals   [‰]'
 		ax1.set_ylabel(ylabel)
 
 		return ax1, ax2
 
-	def plot_D17O_residuals(self,
+	def plot_triple_oxygen_residuals(self,
 		d18O_key_out = 'd18O_VSMOW',
 		D17O_key_out = 'D17O_VSMOW',
 		margins = 0.25,
@@ -908,7 +921,16 @@ class Dataset:
 		)
 
 		w, h, r = cov_ellipse(CM)
-		ax.add_patch(Ellipse(xy = (0, 0), width = w, height = h, angle = r, fc = 'None', **kw_ellipse))
+		ax.add_patch(
+			Ellipse(
+				xy = (0, 0),
+				width = w.item(),
+				height = h.item(),
+				angle = r.item(),
+				fc = 'None',
+				**kw_ellipse,
+			)
+		)
 		ax.plot(
 			[], [],
 			label = '95 % confidence from\ncovariance estimate',
@@ -943,7 +965,7 @@ class Dataset:
 		relative_sigma_precision = 1e-3,
 		max_iter = 10,
 	):
-				
+
 		D17O_key_out = d17O_key_out.replace('d17', 'D17')
 
 		water_anchors = water_anchors.copy()
@@ -959,7 +981,7 @@ class Dataset:
 					numpy.log(1+water_anchors[s][d17O_key_out] / 1e3)
 					- lambda_17 * numpy.log(1+water_anchors[s][d18O_key_out] / 1e3)
 				)
-		
+
 		# TODO: check consistency between d17O and D17O in anchors
 
 		fitparams = lmfit.Parameters()
@@ -977,7 +999,7 @@ class Dataset:
 		for p in fitparams:
 			if p in constraints:
 				fitparams[p].expr = constraints[p]
-	
+
 		def observations():
 			return (
 				self.data[d18O_key_in],
@@ -1002,8 +1024,26 @@ class Dataset:
 				R18_VSMOW = R18_VSMOW,
 				R17_VSMOW = R17_VSMOW,
 				lambda_17 = lambda_17,
+				D727i = 0.1043,
+				D728i = 0.1951,
+				D828i = 0.3743,
+				D637i = 0.5101,
+				D638i = 0.9714,
+				D737i = 1.1188,
+				D738i = 1.6662,
+				D838i = 2.3046,
+				D727=0.1043,
+				D728=0.1951,
+				D828=0.3743,
+				D637=0.5101,
+				D638=0.9714,
+				D737=1.1188,
+				D738=1.6662,
+				D838=2.3046,
+				stochastic = False,
+				xtol = 1e-12,
 			)[:2]
-			
+
 
 		def truevalues(p):
 
@@ -1022,9 +1062,9 @@ class Dataset:
 			})
 
 			_ = self.data.apply(_CO2eq_fun, axis = 1, result_type = 'expand')
-			
+
 			d18co2, D17co2 = _[0], _[1]
-			
+
 			d17co2 = 1e3 * (
 				numpy.exp((D17co2)/1e3)
 				* (1+d18co2/1e3)**lambda_17
@@ -1153,7 +1193,7 @@ class Dataset:
 					d18corrected - d18true,
 					d17corrected - d17true,
 				])
-# 
+#
 			if ChM is None:
 				return R.flatten()
 			else:
@@ -1336,12 +1376,12 @@ class Dataset:
 			)
 
 		# TODO: propagate uncertainties to d17O_key_out using the code below
-		# 
+		#
 		# try:
 		# 	i = fitresult.var_names.index('d18O_'+_s)
 		# 	j = fitresult.var_names.index('D17O_'+_s)
 		# 	CM = fitresult.covar[ix_([i,j],[i,j])]
-		# 
+		#
 		# 	J = array([
 		# 		[
 		# 			exp(out['samples'][s][D17O_key_out]/1e3)
@@ -1353,7 +1393,7 @@ class Dataset:
 		# 			* (1+out['samples'][s][d18O_key_out]/1e3) ** ISOPARAMETERS.lambda_17
 		# 			],
 		# 		])
-		# 
+		#
 		# 	out['samples'][s]['SE_'+d17O_key_out] = float(J.T @ CM @ J)**.5
 		# 	out['samples'][s]['95CL_'+d17O_key_out] = out['samples'][s]['SE_'+d17O_key_out] * out['t95']
 		# except ValueError:
@@ -1381,7 +1421,7 @@ class Dataset:
 		else:
 			self.anchors = df_anchors.copy()
 			self.anchors.index.name = 'Sample'
-		
+
 		# TODO: compute anchor mismatch ie mean and SE of residuals
 
 
