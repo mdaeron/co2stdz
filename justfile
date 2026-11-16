@@ -1,4 +1,5 @@
 doc:
+	cd examples; uv run examples.py
 	cd src; uv run ../build_doc.py
 
 test:
